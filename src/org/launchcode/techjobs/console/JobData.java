@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by LaunchCode
@@ -74,9 +75,9 @@ public class JobData {
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String aValue = row.get(column).toLowerCase(Locale.ROOT);
 
-            if (aValue.contains(value)) {
+            if (aValue.contains(value.toLowerCase(Locale.ROOT))) {
                 jobs.add(row);
             }
         }
@@ -123,6 +124,61 @@ public class JobData {
             System.out.println("Failed to load job data");
             e.printStackTrace();
         }
-    }
+    }//loadData()
 
-}
+    //jf 1/12/2021
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        // load data, if not already loaded
+        loadData();
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+//        for (HashMap<String, String> row: allJobs) {
+//            if (row.containsValue(value)) {
+//                jobs.add(row);
+//                System.out.println("Row: " + row);
+//                /*
+//                * */
+//            }//if [case and """"full-field"""""""""" sensitive (bc of containsValue()?)]
+//            //how to containsValue() but for text snippets
+//            //independent for loop to cycle through each row HashMap? automatic aValue and then do String .contains()
+//        }//for
+
+        for(HashMap<String, String> row: allJobs){
+
+            for (String query : row.values()){
+
+                if (query.toLowerCase(Locale.ROOT).contains(value.toLowerCase(Locale.ROOT))){
+                    jobs.add(row);
+                    break;
+
+                }//if
+
+            }//for String : values
+
+        }//for-each thru loaded jobs
+
+        return jobs;
+
+    }//findByValue()
+
+
+
+}//JobData
+/*   public static ArrayList<HashMap<String, String>> findByColumnAndValue(String column, String value) {
+
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+
+            String aValue = row.get(column);
+
+            if (aValue.contains(value)) {
+                jobs.add(row);
+            }
+        }
+
+        return jobs;
+    }*/

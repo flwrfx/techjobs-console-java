@@ -1,8 +1,9 @@
 package org.launchcode.techjobs.console;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.awt.image.ImageProducer;
+import java.lang.reflect.Array;
+import java.util.*;
+
 
 /**
  * Created by LaunchCode
@@ -61,13 +62,13 @@ public class TechJobs {
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
+                    printJobs(JobData.findByValue(searchTerm));
                 } else {
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
             }
         }
-    }
+    }//main
 
     // ﻿Returns the key of the selected item from the choices Dictionary
     private static String getUserSelection(String menuHeader, HashMap<String, String> choices) {
@@ -111,6 +112,24 @@ public class TechJobs {
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
-    }
-}
+        if(someJobs.isEmpty()){
+            System.out.println("No results found.");
+        } else {
+            //ArrayList<String> postList = new ArrayList<>(); arraylist to add collected return results to (just in case)
+            for (HashMap<String, String> post : someJobs) {
+                Object[] setKeys = post.keySet().toArray();
+                Object[] setValues = post.values().toArray();
+                String jobPost = "*****\n";
+
+                for (int i = 0; i < setKeys.length; i++) {
+                    jobPost += setKeys[i] + ": " + setValues[i] + "\n";
+                }//for
+                jobPost += "*****";
+                System.out.println(jobPost);
+                //postList.add(jobPost); //add collected return results to arraylist (just in case?)
+            }//for
+        }//else
+        //System.out.println(postList); println arraylist of collected return results (just in case!!)
+    }//printJobs()
+
+}//end
